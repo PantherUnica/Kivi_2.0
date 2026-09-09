@@ -1,0 +1,3 @@
+# Product Positioning Statement (100 words)
+
+Kivi is a voice-first assistant that remembers what you said and how you say it — not who you are. In our 100-person survey, respondents ranked writing style and tone their #1 work memory (81%) and rejected personal-relationship memory outright (25%, ranked last by 43%); 78% demanded easy deletion. Semantic memory therefore builds a confidence-graded record of episodes and stylistic patterns, never inferred identity — explicit statements outrank inference, sensitive topics are never auto-captured. Trust is earned through legibility, not omniscience: every memory traces to its source, corrects in one sentence, and never claims more certainty than it has earned.
