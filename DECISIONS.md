@@ -337,3 +337,21 @@ using that".
 **Why not delete the transcript too.** Deleting a dictation because one claim
 was derived from it would destroy unrelated evidence and silently rewrite the
 record. Deletion of source material should be an explicit, separate act.
+
+---
+
+## Phase 7 — Landing page
+
+### D-30 | Identity | A creative-studio landing page, borrowing the grammar and not the look
+
+**Decision.** The web client now opens on a landing page (`frontend/src/components/Landing.jsx`) before the product. Its structure borrows from the reference studio site the brief pointed at: bracket-notation eyebrows (`[ like this ]`), a numbered 01–05 list, a looping marquee, a mission statement, a big closing ask, and a footer that echoes the brand idea. Its *look* stays Kivi's own — near-black, one acid green, an editorial serif — because the reference is a light, photography-first site and Kivi has no photography; it has a bird and a position.
+
+**Why.** The brief evaluates "interface, interactions, language, visual character" together, and asked for a premium creative feel rather than an AI dashboard. The five numbered items are the five memory types in the survey's own ranking, so the page argues the position rather than decorating it.
+
+**The animation.** The bird performs the product in one motion: it walks in, stops, tilts its head and listens (rings pulse off the beak), and only then is *"Kivi writes."* typed out. The order matters — writing waits for listening.
+
+**Downloaded for it.** `gsap` 3.12 (ScrollTrigger reveals) and `lenis` 1.1 (smooth scroll), both pinned in `frontend/package.json` and installed at image build. The bird is an original stroked SVG, not an asset; nothing from the reference site is used.
+
+**Live, not copy.** The numbers on the page are fetched from `/api/stats` — dictations kept, things remembered, times it declined — and the page says so.
+
+**Deep links.** `#app`, `#ask`, `#knows` skip the landing so RUN.md's review path is unchanged.

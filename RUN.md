@@ -93,7 +93,7 @@ curl http://localhost:8000/api/health
 
 ## 6. The interface to open
 
-**http://localhost:5173**
+**http://localhost:5173** — opens on the landing page; press **[ open kivi ]** or go straight to **http://localhost:5173/#app** to skip it.
 
 OpenAPI docs are at **http://localhost:8000/docs**.
 

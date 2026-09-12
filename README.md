@@ -46,7 +46,7 @@ Everything below is a real path through the system, exercised by the evaluation.
 ## Architecture
 
 ```
-  React + Vite  (Desk · Hey Kivi · What Kivi knows · "why did Kivi say this?")
+  React + Vite  (Landing · Desk · Hey Kivi · What Kivi knows · "why did Kivi say this?")
         │  REST
   FastAPI — modular monolith
         ├── ingest/      import · field mapping · chunk · embed
@@ -160,7 +160,7 @@ research/       the n=100 survey: raw CSV + analysis
 DECISIONS.md    29 logged build decisions, with what was rejected and why
 RUN.md          the primary review method, step by step
 backend/        FastAPI app, memory engine, RAG layer, migrations, CLI
-frontend/       React + Vite client
+frontend/       React + Vite client — landing page + the three product surfaces
 corpus/         generator, 520-record corpus (JSONL + CSV), manifest, field mapping
 evaluation/     assertions, harness, generated results
 docs/           architecture notes
