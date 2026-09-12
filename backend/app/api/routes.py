@@ -74,8 +74,8 @@ def ask(req: AskRequest, db: Session = Depends(get_db)) -> dict:
 
 # ------------------------------------------------------------------ dictation
 class DictateRequest(BaseModel):
-    text: str
-    raw_asr: str | None = None
+    text: str | None = None          # already-written text (typed)
+    raw_asr: str | None = None       # recogniser output (spoken); Kivi formats it
     app: str | None = None
     destination: str | None = None
     project: str | None = None
@@ -93,14 +93,30 @@ def dictate(req: DictateRequest, db: Session = Depends(get_db)) -> dict:
     from app.ingest.chunker import chunk
     from app.models import Episode, InteractionChunk
 
+    from app.ingest.formatter import format_dictation
+
+    if not (req.text or req.raw_asr):
+        raise HTTPException(400, "text or raw_asr is required")
+
+    # Spoken input arrives raw and Kivi writes it; typed input is already
+    # written. Either way both columns are filled honestly.
+    formatting = {"model": "none", "tokens": 0, "cost_usd": 0.0}
+    if req.raw_asr and not req.text:
+        written, formatting = format_dictation(req.raw_asr)
+        raw = req.raw_asr
+    else:
+        written = req.text
+        raw = req.raw_asr or req.text
+
     user = _user(db)
     when = req.captured_at or datetime.now(timezone.utc)
     interaction = Interaction(
         user_id=user.id, captured_at=when, mode="dictation",
         app=req.app, destination=req.destination, project_hint=req.project,
-        raw_asr=req.raw_asr or req.text, formatted_text=req.text,
-        source_corpus="live",
+        raw_asr=raw, formatted_text=written,
+        source_corpus="live", meta={"formatting": formatting},
     )
+    req.text = written
     db.add(interaction)
     db.flush()
 
@@ -131,7 +147,9 @@ def dictate(req: DictateRequest, db: Session = Depends(get_db)) -> dict:
 
     return {
         "interaction_id": interaction.id,
-        "text": req.text,            # unchanged. always.
+        "raw_asr": raw,
+        "text": written,             # what Kivi wrote. memory never edits it.
+        "formatting": formatting,
         "learned": learned,
         "note": _learned_note(learned),
     }

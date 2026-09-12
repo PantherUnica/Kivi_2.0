@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { api } from '../api.js'
+import { useSpeech } from '../lib/speech.js'
+import VoiceButton from './VoiceButton.jsx'
 
 const APPS = ['Slack', 'Gmail', 'Notion', 'Linear', 'WhatsApp']
 
@@ -21,16 +23,22 @@ export default function Desk({ onOpenAsk }) {
   }
   useEffect(refresh, [])
 
-  const send = async () => {
-    if (!text.trim()) return
+  const capture = async (payload) => {
     setBusy(true); setError(null)
     try {
-      const out = await api.dictate({ text, app, destination, project })
+      const out = await api.dictate({ ...payload, app, destination, project })
       setLearned(out)
       setText('')
       refresh()
     } catch (e) { setError(e.message) } finally { setBusy(false) }
   }
+
+  const send = () => text.trim() && capture({ text })
+
+  // Spoken path: the recogniser's raw output goes to the backend as raw_asr
+  // and Kivi writes it. The typed path sends `text` as already written.
+  const speech = useSpeech({ onFinal: (raw) => capture({ raw_asr: raw }) })
+  const heard = [speech.finalText, speech.interim].filter(Boolean)
 
   const activeMemories = (stats?.memories_by_type || [])
     .filter((m) => m.status === 'active')
@@ -56,11 +64,24 @@ export default function Desk({ onOpenAsk }) {
 
       <div className="desk-grid">
         <div>
+          <div className="row" style={{ marginBottom: '1rem' }}>
+            <VoiceButton speech={speech} size="lg" label="press and speak" />
+          </div>
+
+          {(speech.listening || heard.length > 0) && (
+            <div className="interim">
+              {speech.finalText && <span className="heard">{speech.finalText} </span>}
+              {speech.interim && <span className="partial">{speech.interim}</span>}
+              {speech.listening && !heard.length && <span className="partial">say something…</span>}
+            </div>
+          )}
+
           <textarea
             className="mic"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Dictate something. Try: For Acme I always keep updates to three short paragraphs, no bullet points."
+            placeholder="…or type. Try: For Acme I always keep updates to three short paragraphs, no bullet points."
+            style={{ marginTop: '0.8rem', minHeight: 100 }}
           />
           <div className="row" style={{ marginTop: '0.9rem' }}>
             <select className="field" value={app} onChange={(e) => setApp(e.target.value)}>
@@ -89,6 +110,12 @@ export default function Desk({ onOpenAsk }) {
             >
               <div>
                 <strong>{learned.note || 'Kivi kept your words and learned nothing new.'}</strong>
+                {learned.raw_asr && learned.raw_asr !== learned.text && (
+                  <div className="raw-vs">
+                    <span className="k">heard</span><span className="raw">{learned.raw_asr}</span>
+                    <span className="k">wrote</span><span>{learned.text}</span>
+                  </div>
+                )}
                 <div style={{ marginTop: '0.5rem', color: 'var(--paper-dim)' }}>
                   {learned.learned.created.map((m) => (
                     <div key={m.id}>+ {m.claim}</div>

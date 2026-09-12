@@ -505,3 +505,53 @@ button.ghost:hover { border-color: var(--acid-deep); color: var(--paper); }
   cursor: pointer;
 }
 main.is-landing { padding-top: 0; padding-bottom: 0; }
+
+/* ------------------------------------------------------------------ voice */
+.voice { display: inline-flex; align-items: center; gap: 0.8rem; }
+.voice-btn {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 1px solid var(--acid-deep);
+  background: var(--ink-soft);
+  color: var(--acid);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.voice-btn:hover { background: var(--acid-glow); }
+.voice-btn.live {
+  background: var(--acid);
+  color: var(--ink);
+  box-shadow: 0 0 0 8px var(--acid-glow), 0 0 40px rgba(157, 251, 63, 0.35);
+  animation: breathe 1.6s ease-in-out infinite;
+}
+@keyframes breathe { 50% { box-shadow: 0 0 0 14px var(--acid-glow), 0 0 60px rgba(157,251,63,0.45); } }
+.voice.lg .voice-btn { width: 84px; height: 84px; }
+.voice.lg .voice-btn svg { width: 30px; height: 30px; }
+.voice.sm .voice-btn { width: 44px; height: 44px; }
+.voice.sm .voice-btn svg { width: 16px; height: 16px; }
+
+.bars { display: flex; align-items: center; gap: 3px; height: 60%; }
+.bars span {
+  width: 3px; min-height: 4px;
+  background: currentColor; border-radius: 2px;
+  transition: height 90ms linear;
+}
+
+.voice-label { font-family: var(--mono); font-size: 0.7rem; color: var(--paper-faint); letter-spacing: 0.06em; }
+.voice-err { font-family: var(--mono); font-size: 0.68rem; color: #ffb3aa; }
+.voice-unsupported { font-family: var(--mono); font-size: 0.7rem; color: var(--paper-faint); }
+
+.interim {
+  font-family: var(--display); font-style: italic;
+  color: var(--paper-dim); font-size: 1.15rem; line-height: 1.5;
+  min-height: 1.6em; margin-top: 0.8rem;
+}
+.interim .heard { color: var(--paper); font-style: normal; }
+.interim .partial { opacity: 0.55; }
+
+.raw-vs {
+  margin-top: 0.8rem; display: grid; grid-template-columns: 80px 1fr; gap: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
+.raw-vs .k { font-family: var(--mono); font-size: 0.65rem; color: var(--paper-faint); letter-spacing: 0.1em; text-transform: uppercase; padding-top: 0.2rem; }
+.raw-vs .raw { color: var(--paper-faint); font-family: var(--mono); font-size: 0.78rem; }

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { api } from '../api.js'
 import Trace from './Trace.jsx'
+import { useSpeech } from '../lib/speech.js'
+import VoiceButton from './VoiceButton.jsx'
 
 const SUGGESTIONS = [
   'What do you know about how I write for Acme?',
@@ -77,6 +79,10 @@ export default function Ask() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
 
+  // "Hey Kivi" is meant to be said, not typed. A spoken question is asked
+  // the moment the recogniser finalises it.
+  const speech = useSpeech({ continuous: false, onFinal: (raw) => ask(raw) })
+
   const ask = async (utterance) => {
     const text = (utterance ?? q).trim()
     if (!text) return
@@ -97,11 +103,12 @@ export default function Ask() {
       </p>
 
       <div className="ask-bar">
+        <VoiceButton speech={speech} size="md" label="" />
         <input
-          value={q}
+          value={speech.listening ? (speech.finalText + ' ' + speech.interim).trim() : q}
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && ask()}
-          placeholder="Hey Kivi..."
+          placeholder={speech.listening ? 'listening…' : 'Hey Kivi… (speak or type)'}
         />
         <button className="act" onClick={() => ask()} disabled={busy}>
           {busy ? <span className="spin" /> : 'Ask'}

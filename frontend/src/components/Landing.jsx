@@ -5,6 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import KiviBird, { Typewriter } from './KiviBird.jsx'
 import { api } from '../api.js'
+import { useSpeech } from '../lib/speech.js'
+import VoiceButton from './VoiceButton.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -35,7 +37,27 @@ export default function Landing({ onEnter }) {
   const [phase, setPhase] = useState('idle')
   const [typed, setTyped] = useState(false)
   const [stats, setStats] = useState(null)
+  const [spoken, setSpoken] = useState(null)   // { raw, text } after you speak to the bird
   const root = useRef(null)
+
+  // Speak to the bird. It listens while you talk, then writes what you said -
+  // through the real dictation endpoint, so the line on screen is the same
+  // one that just landed in the database.
+  const speech = useSpeech({
+    onFinal: async (raw) => {
+      setPhase('write')
+      try {
+        const out = await api.dictate({ raw_asr: raw, app: 'Kivi', destination: 'landing' })
+        setSpoken({ raw, text: out.text, note: out.note })
+        api.stats().then(setStats).catch(() => {})
+      } catch {
+        setSpoken({ raw, text: raw, note: null })
+      }
+    },
+  })
+  useEffect(() => {
+    if (speech.listening) { setPhase('listen'); setSpoken(null) }
+  }, [speech.listening])
 
   /* ---- the bird's performance ------------------------------------------ */
   useEffect(() => {
@@ -107,11 +129,16 @@ export default function Landing({ onEnter }) {
               Speak.
             </motion.span>
             <span className="line acid">
-              <Typewriter
-                text="Kivi writes."
-                go={phase === 'write'}
-                onDone={() => setTyped(true)}
-              />
+              {speech.listening ? (
+                <span className="you-said">
+                  {(speech.finalText + ' ' + speech.interim).trim() || '…'}
+                  <span className="caret">|</span>
+                </span>
+              ) : spoken ? (
+                <Typewriter key={spoken.text} text={spoken.text} go speed={38} />
+              ) : (
+                <Typewriter text="Kivi writes." go={phase === 'write'} onDone={() => setTyped(true)} />
+              )}
             </span>
           </h1>
         </div>
@@ -125,9 +152,18 @@ export default function Landing({ onEnter }) {
             Never who you are.
           </p>
           <div className="hero-cta">
+            <VoiceButton speech={speech} size="lg" label="press and speak to it" />
             <button className="act big" onClick={onEnter}>Open Kivi</button>
             <a className="ghost-link" href="#remembers">[ what it remembers ]</a>
           </div>
+          {spoken && (
+            <motion.div className="raw-vs" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <span className="k">heard</span><span className="raw">{spoken.raw}</span>
+              <span className="k">wrote</span><span>{spoken.text}</span>
+              <span className="k">kept</span>
+              <span>{spoken.note || 'Yes — the words, verbatim. Nothing new learned from them.'}</span>
+            </motion.div>
+          )}
         </motion.div>
 
         <motion.div

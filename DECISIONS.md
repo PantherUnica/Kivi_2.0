@@ -355,3 +355,15 @@ record. Deletion of source material should be an explicit, separate act.
 **Live, not copy.** The numbers on the page are fetched from `/api/stats` — dictations kept, things remembered, times it declined — and the page says so.
 
 **Deep links.** `#app`, `#ask`, `#knows` skip the landing so RUN.md's review path is unchanged.
+
+---
+
+### D-31 | Voice | Real microphone input via the browser's recogniser; the server still builds no ASR
+
+**Decision.** The three surfaces — the landing bird, the Desk, and Hey Kivi — take spoken input through the Web Speech API the browser already ships (Chrome, Edge, Safari). The recogniser's output is sent to the backend **as `raw_asr`**, and Kivi formats it into `formatted_text` (`backend/app/ingest/formatter.py`): spoken punctuation ("full stop", "comma", "new line"), sentence capitals, `i` → `I`; the configured model does it when one is set, a deterministic formatter otherwise. Memory never touches this step (D-19). Firefox has no recogniser, so the UI reports that and falls back to typing.
+
+**Why this and not a server-side model.** D-10 stands: the brief says not to build ASR, and a mandatory server-side recogniser is the easiest way to break a one-shot review. But a voice-first product whose interface only accepts typing was not demonstrating the thing it is about. The browser's recogniser costs the reviewer nothing to run and produces genuinely raw output — lowercased, unpunctuated, occasionally wrong — which keeps the raw / formatted distinction the whole memory system rests on **real rather than simulated**.
+
+**What was rejected.** Faking it by typing into a textbox with a microphone icon; and shipping whisper / IndicConformer in the image (hundreds of MB, GPU-hungry, and outside the brief). The `ASRProvider` interface remains for either of those to drop in unchanged.
+
+**The landing moment.** Press the mic, speak, and the bird listens while you talk; what you said is written through the real `/api/dictation` endpoint and typed out in place of *"Kivi writes."* — with a `heard / wrote / kept` readout underneath. The line on screen is the same one that just landed in the database.

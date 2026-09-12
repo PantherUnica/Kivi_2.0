@@ -121,7 +121,7 @@ All fifteen evaluation classes A–O pass: memory creation, useful retention, de
 |---|---|---|
 | LLM | `mock` — deterministic, zero credentials | `sarvam` (**sarvam-m**, open-weight, Qwen3-derived) · `openai_compatible` (**Qwen3-8B** via vLLM / Ollama / LM Studio) |
 | Embeddings | `fastembed` — **bge-small-en-v1.5**, 384-d, CPU | `qwen3` (**Qwen3-Embedding-0.6B**, 1024-d) · `hashing` (offline fallback) |
-| ASR | `replay` — transcripts only | `indicconformer` / `whisper` adapters declared, not wired |
+| ASR | browser Web Speech API in the client → `raw_asr`; `replay` on the server | `indicconformer` / `whisper` adapters declared, not wired |
 
 One interface each; swapping is one environment variable. The brief permits replaying transcripts, so **no speech recognition is implemented** — a mandatory microphone is the easiest way to break a one-shot review.
 
@@ -134,7 +134,7 @@ Stated plainly, because a system that hides these is not inspectable.
 - **`mock` is not a language model.** It handles the demo corpus well and generalises worse. Paraphrase-heavy questions on an unseen corpus will do better with `LLM_PROVIDER=sarvam`.
 - **The sensitivity fence is lexical.** It catches the vocabulary of health, money, conflict and distress. Oblique phrasing will get through. The design compensates by fencing at two points (extraction *and* retrieval), but it is pattern matching, not comprehension.
 - **One user.** Single-tenant by design; there is no auth.
-- **No real ASR, no live audio.** By choice, per the brief.
+- **No server-side ASR.** Voice input uses the browser's own recogniser (Web Speech API — Chrome, Edge, Safari; not Firefox). That keeps the raw-vs-formatted distinction real, but recognition quality is the browser's, not Kivi's, and it needs microphone permission.
 - **Contradiction detection is pairwise** within a type and scope. A claim contradicted by the *combination* of two others is not caught.
 - **Commitments expire on a parsed due date**, and date parsing is limited to weekdays and simple phrases.
 - **The corpus is synthetic.** It was written to exercise the system, including its failure modes, and the system was tuned against it — the reviewer's corpus is the honest test.

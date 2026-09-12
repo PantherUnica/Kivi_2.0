@@ -255,3 +255,6 @@ button.act.big { padding: 1rem 2.2rem; font-size: 0.9rem; }
 .foot-links a:hover { color: var(--acid); }
 .foot-links span { color: var(--paper-faint); }
 .linkish { background: none; border: 0; padding: 0; color: var(--acid); font-family: var(--mono); font-size: 0.72rem; cursor: pointer; }
+
+.you-said { font-style: italic; }
+.hero-cta { flex-wrap: wrap; }

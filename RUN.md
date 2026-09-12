@@ -39,7 +39,7 @@ cp .env.example .env
 | `EMBEDDING_PROVIDER` | `fastembed` | `fastembed` / `qwen3` / `hashing` |
 | `EMBED_DIM` | `384` | **must** match the model; changing it requires a reset |
 | `EMBED_MODEL` | `BAAI/bge-small-en-v1.5` | |
-| `ASR_PROVIDER` | `replay` | no speech recognition is built — see README |
+| `ASR_PROVIDER` | `replay` | server-side ASR is not built; the browser's recogniser supplies `raw_asr` — see README |
 | `DATABASE_URL` | set by compose | |
 | `API_PORT` / `WEB_PORT` | `8000` / `5173` | |
 | `KIVI_USER_HANDLE` | `maya` | the single demo user |
@@ -109,7 +109,9 @@ docker compose exec api python -m app.cli import --file corpus/kivi_corpus.jsonl
 
 About 25 seconds with `mock`. Then, in the UI:
 
-**Desk** — dictate something and watch the quiet "Kivi learned…" note. Try:
+**Speak to it.** Every surface has a mic (Chrome, Edge or Safari; Firefox has no speech recogniser and the UI says so). Press it, talk, and the raw recogniser output is sent as `raw_asr`; Kivi writes it. On the landing page the bird listens while you speak and types back what it wrote. The browser will ask for microphone permission once.
+
+**Desk** — press the mic and speak, or type. Watch the quiet "Kivi learned…" note and the `heard / wrote` readout. Try saying:
 
 > `For Acme I always keep updates to three short paragraphs, no bullet points.`
 >
