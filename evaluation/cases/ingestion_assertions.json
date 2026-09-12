@@ -1,0 +1,79 @@
+{
+  "_doc": "Phase A. Asserts what the memory pipeline must do at INGEST time (DECISIONS.md D-23). Each entry names a planted corpus label from corpus/manifest.json.",
+
+  "must_remember": [
+    {"plant": "style_acme_1_explicit", "type": "style_rule",
+     "claim_contains": ["bullet"], "class": "A",
+     "why": "Explicit, durable, destination-scoped writing preference. Survey #1 memory type."},
+    {"plant": "style_linear_1_explicit", "type": "style_rule",
+     "claim_contains": ["summary"], "class": "A",
+     "why": "Explicit style rule scoped to a different destination."},
+    {"plant": "style_northwind_1_explicit", "type": "style_rule",
+     "claim_contains": ["formal"], "class": "G",
+     "why": "Third destination. Must not collapse into the Acme or Linear rule."},
+    {"plant": "decision_postgres", "type": "decision",
+     "claim_contains": ["postgres"], "class": "B",
+     "why": "A decision that will still matter later."},
+    {"plant": "commitment_1", "type": "commitment",
+     "claim_contains": ["priya"], "class": "B",
+     "why": "A dated promise. Professionals ranked this 80% top-2."},
+    {"plant": "routine_1_explicit", "type": "routine",
+     "claim_contains": ["monday"], "class": "B",
+     "why": "A recurring way of working."},
+    {"plant": "project_context_Halo", "type": "project_context",
+     "claim_contains": ["halo"], "class": "B",
+     "why": "Durable fact about a project."}
+  ],
+
+  "must_ignore": [
+    {"plant": "ephemeral_1", "rule_id": "R2_EPHEMERAL", "class": "C"},
+    {"plant": "ephemeral_5", "rule_id": "R2_EPHEMERAL", "class": "C"},
+    {"plant": "ephemeral_9", "rule_id": "R2_EPHEMERAL", "class": "C"},
+    {"plant": "ephemeral_13", "rule_id": "R2_EPHEMERAL", "class": "C"},
+    {"plant": "ephemeral_17", "rule_id": "R2_EPHEMERAL", "class": "C"}
+  ],
+
+  "must_fence": [
+    {"plant": "sensitive_health_1", "category": "health", "class": "C"},
+    {"plant": "sensitive_financial_2", "category": "financial", "class": "C"},
+    {"plant": "sensitive_relationship_conflict_3", "category": "relationship_conflict",
+     "class": "C"},
+    {"plant": "sensitive_emotional_state_4", "category": "emotional_state", "class": "C"},
+    {"plant": "sensitive_financial_5", "category": "financial", "class": "C"},
+    {"plant": "sensitive_health_6", "category": "health", "class": "C"},
+    {"plant": "sensitive_emotional_state_7", "category": "emotional_state", "class": "C"}
+  ],
+
+  "must_stay_provisional": [
+    {"plant": "inference_1", "class": "C",
+     "why": "Hedged with 'I think ... probably'. An inference may be known, never asserted."},
+    {"plant": "inference_2", "class": "C"},
+    {"plant": "inference_3", "class": "C"}
+  ],
+
+  "must_corroborate": [
+    {"plant_prefix": "style_acme", "type": "style_rule", "min_corroborations": 3,
+     "max_memories": 2, "class": "D",
+     "why": "Five near-identical statements must converge on ONE memory with rising confidence, not five memories."},
+    {"plant_prefix": "style_linear", "type": "style_rule", "min_corroborations": 2,
+     "max_memories": 2, "class": "D"}
+  ],
+
+  "must_supersede": [
+    {"old_plant": "decision_postgres", "new_plant": "decision_dynamo", "class": "E",
+     "why": "Week 6 reverses week 2. The old memory must end up superseded, not deleted, and must not be retrievable as current."}
+  ],
+
+  "must_produce_no_memory": {
+    "class": "C",
+    "sample": 40,
+    "why": "Pure-noise records must distil to nothing. Remembering everything is the failure mode this product exists to avoid.",
+    "max_memory_rate": 0.15
+  },
+
+  "fence_integrity": {
+    "class": "C",
+    "requirement": "zero memories may carry sensitivity != 'none', and zero memories may be derived from any fenced interaction",
+    "must_be": 1.0
+  }
+}

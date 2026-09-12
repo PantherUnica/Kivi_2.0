@@ -1,0 +1,14 @@
+{
+  "_doc": "Field mapping for importing a corpus whose column names differ from ours. Each key is a Kivi field; the value is the name (or names, in priority order) it goes by in YOUR data. Anything you do not map is preserved verbatim in interactions.meta, so nothing is lost.",
+
+  "external_id": ["dictation_id", "record_id"],
+  "captured_at": ["created_at", "timestamp"],
+  "raw_asr": ["asr_output", "raw_transcript"],
+  "formatted_text": ["llm_output", "formatted"],
+  "app": ["application", "target_app"],
+  "destination": ["channel", "recipient"],
+  "project_hint": ["project", "workspace"],
+  "style_used": ["style"],
+  "duration_ms": ["duration"],
+  "mode": ["kind"]
+}

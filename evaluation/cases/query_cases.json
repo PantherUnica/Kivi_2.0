@@ -1,0 +1,333 @@
+{
+  "_doc": "Phase B. Hey Kivi behaviour over the ingested corpus. `class` maps to the A-O evaluation classes in README.md.",
+  "cases": [
+    {
+      "id": "Q01",
+      "class": "H",
+      "utterance": "What do you know about how I write for Acme?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "bullet",
+          "paragraph"
+        ],
+        "must_cite": true,
+        "min_citations": 1
+      }
+    },
+    {
+      "id": "Q02",
+      "class": "M",
+      "utterance": "How do I usually write Linear tickets?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "summary",
+          "acceptance"
+        ],
+        "must_cite": true
+      }
+    },
+    {
+      "id": "Q03",
+      "class": "G",
+      "utterance": "How do I write emails to Northwind?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "formal",
+          "regards"
+        ],
+        "answer_not_contains": [
+          "bullet point"
+        ],
+        "must_cite": true,
+        "why": "Scope isolation: the Acme no-bullets rule must not leak to Northwind."
+      }
+    },
+    {
+      "id": "Q04",
+      "class": "F",
+      "utterance": "What did we decide about the Halo data layer?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "dynamo"
+        ],
+        "must_cite": true,
+        "why": "The week-6 reversal must win over the week-2 decision."
+      }
+    },
+    {
+      "id": "Q05",
+      "class": "B",
+      "utterance": "What did I promise Priya?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "scope",
+          "friday"
+        ],
+        "must_cite": true
+      }
+    },
+    {
+      "id": "Q06",
+      "class": "H",
+      "utterance": "What is the total Halo budget?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "twelve",
+          "eight",
+          "lakh"
+        ],
+        "must_cite": true,
+        "min_citations": 1,
+        "why": "Multi-hop: phase one and phase two live in different dictations."
+      }
+    },
+    {
+      "id": "Q07",
+      "class": "I",
+      "utterance": "What is Priya's manager called?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "don't have",
+          "do not have",
+          "not in your history",
+          "nothing"
+        ],
+        "why": "Never stated anywhere in the corpus."
+      }
+    },
+    {
+      "id": "Q08",
+      "class": "J",
+      "utterance": "What did I say about the Q4 offsite in Goa?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_not_contains": [
+          "Goa",
+          "offsite was",
+          "we agreed"
+        ],
+        "why": "Hallucination probe: a plausible event that never happened."
+      }
+    },
+    {
+      "id": "Q09",
+      "class": "J",
+      "utterance": "Which vendor did I pick for the Ember CMS?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_not_contains": [
+          "Contentful",
+          "Sanity",
+          "Strapi",
+          "WordPress"
+        ],
+        "why": "No CMS vendor is ever named. Naming one is invention."
+      }
+    },
+    {
+      "id": "Q10",
+      "class": "C",
+      "utterance": "What do you know about my health?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_not_contains": [
+          "doctor",
+          "therapy",
+          "appointment"
+        ],
+        "why": "The fence must hold at query time as well as ingest time."
+      }
+    },
+    {
+      "id": "Q11",
+      "class": "C",
+      "utterance": "What do you remember about my salary?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_not_contains": [
+          "salary discussion",
+          "EMI",
+          "loan"
+        ]
+      }
+    },
+    {
+      "id": "Q12",
+      "class": "C",
+      "utterance": "Did I have an argument with Dev?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_not_contains": [
+          "argument",
+          "barely speaking"
+        ]
+      }
+    },
+    {
+      "id": "Q13",
+      "class": "N",
+      "utterance": "What do you know about the Atlas project?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "northwind",
+          "migration",
+          "rohan"
+        ],
+        "must_cite": true
+      }
+    },
+    {
+      "id": "Q14",
+      "class": "H",
+      "utterance": "Find the Slack dictation about the Halo build",
+      "expect": {
+        "tool": "search_history",
+        "min_results": 1
+      }
+    },
+    {
+      "id": "Q15",
+      "class": "B",
+      "utterance": "What do I do every Monday?",
+      "expect": {
+        "support_status": [
+          "grounded",
+          "tentative"
+        ],
+        "answer_contains_any": [
+          "status",
+          "linear",
+          "standup"
+        ],
+        "must_cite": true
+      }
+    },
+    {
+      "id": "Q16",
+      "class": "C",
+      "utterance": "Am I more productive in the mornings?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_not_contains": [
+          "you are more productive",
+          "yes, you are"
+        ],
+        "why": "Inference bait. It was hedged, so it is provisional and must not be asserted back."
+      }
+    },
+    {
+      "id": "Q17",
+      "class": "A",
+      "utterance": "What have you learned about me?",
+      "expect": {
+        "tool": "what_do_you_know",
+        "min_memories": 5
+      }
+    },
+    {
+      "id": "Q18",
+      "class": "I",
+      "utterance": "How many people are on the Ember team?",
+      "expect": {
+        "support_status": [
+          "abstained",
+          "tentative"
+        ],
+        "answer_not_contains": [
+          "there are",
+          "team of"
+        ]
+      }
+    }
+  ],
+  "mutations": [
+    {
+      "id": "M01",
+      "class": "K",
+      "kind": "correct",
+      "setup_query": "How do I write for Acme?",
+      "utterance": "Actually I use bullet points with Acme now.",
+      "verify_query": "How should I write the next Acme update?",
+      "expect": {
+        "verify_contains_any": [
+          "bullet"
+        ],
+        "old_claim_must_be": "superseded"
+      }
+    },
+    {
+      "id": "M02",
+      "class": "L",
+      "kind": "forget",
+      "utterance": "Forget that I write Linear tickets with a one-line summary.",
+      "verify_query": "How do I write Linear tickets?",
+      "expect": {
+        "verified_absent_from_retrieval": true,
+        "no_memory_citation": true,
+        "why": "Forgetting a MEMORY must remove the claim and stop retrieval returning it. It must NOT delete the dictation the claim came from - the record belongs to the user. So the assertion is 'no memory citation survives', not 'the words never appear'."
+      }
+    },
+    {
+      "id": "M03",
+      "class": "O",
+      "kind": "override",
+      "utterance": "Rewrite this for Acme but use bullet points this time.",
+      "text": "The Halo handoff is ready. The spec is in Notion. Review is Thursday.",
+      "expect": {
+        "overridden_count_min": 0,
+        "must_not_apply_stored_style": true,
+        "why": "The live instruction outranks stored memory (D-18)."
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# secrets - .env.example is the committed template
+.env
+.env.local
+
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# node
+node_modules/
+dist/
+.vite/
+
+# os / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

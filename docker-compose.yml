@@ -1,0 +1,59 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: kivi-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kivi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kivi}
+      POSTGRES_DB: ${POSTGRES_DB:-kivi}
+    ports:
+      - "55432:5432"
+    volumes:
+      - kivi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kivi} -d ${POSTGRES_DB:-kivi}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ./backend
+    container_name: kivi-api
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-kivi}:${POSTGRES_PASSWORD:-kivi}@db:5432/${POSTGRES_DB:-kivi}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+      - ./corpus:/app/corpus
+      - ./evaluation:/app/evaluation
+      - ./seed:/app/seed
+      - ./tests:/app/tests
+      - kivi_models:/models
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --log-level info"
+
+  web:
+    build:
+      context: ./frontend
+    container_name: kivi-web
+    depends_on:
+      - api
+    environment:
+      VITE_API_BASE: ${VITE_API_BASE:-http://localhost:8000}
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/index.html:/app/index.html
+
+volumes:
+  kivi_pgdata:
+  kivi_models:

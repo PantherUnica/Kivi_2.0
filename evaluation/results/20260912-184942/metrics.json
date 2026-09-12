@@ -1,0 +1,173 @@
+{
+  "run_at": "2026-09-12T18:50:03.115198+00:00",
+  "providers": {
+    "llm_provider": "mock",
+    "llm_model": "mock-deterministic",
+    "embedding_provider": "fastembed",
+    "embedding_degraded": false,
+    "embed_dim": 384
+  },
+  "totals": {
+    "cases": 48,
+    "passed": 48,
+    "failed": 0,
+    "pass_rate": 1.0
+  },
+  "by_phase": {
+    "A": {
+      "passed": 27,
+      "total": 27
+    },
+    "B": {
+      "passed": 21,
+      "total": 21
+    }
+  },
+  "by_class": {
+    "A": {
+      "passed": 3,
+      "total": 3
+    },
+    "G": {
+      "passed": 2,
+      "total": 2
+    },
+    "B": {
+      "passed": 6,
+      "total": 6
+    },
+    "C": {
+      "passed": 21,
+      "total": 21
+    },
+    "D": {
+      "passed": 2,
+      "total": 2
+    },
+    "E": {
+      "passed": 1,
+      "total": 1
+    },
+    "H": {
+      "passed": 3,
+      "total": 3
+    },
+    "M": {
+      "passed": 1,
+      "total": 1
+    },
+    "F": {
+      "passed": 1,
+      "total": 1
+    },
+    "I": {
+      "passed": 2,
+      "total": 2
+    },
+    "J": {
+      "passed": 2,
+      "total": 2
+    },
+    "N": {
+      "passed": 1,
+      "total": 1
+    },
+    "K": {
+      "passed": 1,
+      "total": 1
+    },
+    "L": {
+      "passed": 1,
+      "total": 1
+    },
+    "O": {
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "memory": {
+    "interactions_ingested": 520,
+    "memories_total": 15,
+    "memories_active": 12,
+    "memories_per_100_interactions": 2.88,
+    "useful_memory_precision": 0.8667,
+    "fenced_interactions": 14,
+    "noise_memory_rate": 0.0
+  },
+  "quality": {
+    "evidence_support_rate": 1.0,
+    "abstention_accuracy": 1.0,
+    "grounded_answers": 6
+  },
+  "performance": {
+    "query_latency_p50_ms": 55,
+    "query_latency_p95_ms": 64,
+    "retrieval_latency_p50_ms": 19,
+    "correction_latency_p50_ms": 46,
+    "ingest_elapsed_s": 17.18
+  },
+  "cost": {
+    "ingest_tokens": 228273,
+    "ingest_cost_usd": 0.0,
+    "query_cost_usd": 0.0,
+    "cost_per_100_records_usd": 0.0,
+    "cost_per_active_memory_usd": 0.0
+  },
+  "database_growth": {
+    "total_bytes": 5816320,
+    "total_mb": 5.55,
+    "bytes_per_interaction": 11185,
+    "tables": [
+      {
+        "table": "interactions",
+        "rows": 520,
+        "bytes": 876544
+      },
+      {
+        "table": "interaction_chunks",
+        "rows": 520,
+        "bytes": 1982464
+      },
+      {
+        "table": "episodes",
+        "rows": 520,
+        "bytes": 2170880
+      },
+      {
+        "table": "memories",
+        "rows": 14,
+        "bytes": 253952
+      },
+      {
+        "table": "memory_evidence",
+        "rows": 21,
+        "bytes": 65536
+      },
+      {
+        "table": "memory_decisions",
+        "rows": 26,
+        "bytes": 172032
+      },
+      {
+        "table": "memory_events",
+        "rows": 22,
+        "bytes": 114688
+      },
+      {
+        "table": "ignored_spans",
+        "rows": 14,
+        "bytes": 98304
+      },
+      {
+        "table": "hey_kivi_turns",
+        "rows": 0,
+        "bytes": 49152
+      },
+      {
+        "table": "retrieval_traces",
+        "rows": 0,
+        "bytes": 32768
+      }
+    ]
+  }
+}
